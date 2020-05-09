@@ -15,14 +15,16 @@ function startLoading() {
 }
 function endLoading() {
 }
-
+const getLoginUser = ()=>{
+  return localStorage.userInfo?JSON.parse(localStorage.userInfo):{}
+}
 //  request拦截器
 service.interceptors.request.use(
   (config:any) => {
     startLoading();
-    // if (config.url.indexOf("loginSystem") == -1) {
-    //   config.headers.common["Authorization"] = `Bearer ${getLoginUser().token}`;
-    // }
+    if (config.url.indexOf("loginSystem") == -1) {
+      config.headers.common["Authorization"] = `Bearer ${getLoginUser().token}`;
+    }
     // if (
     //   config.url.indexOf("uploadImg") != -1 ||
     //   config.url.indexOf("/uploadTestInfo") != -1

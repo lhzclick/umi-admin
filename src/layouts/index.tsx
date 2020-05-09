@@ -37,7 +37,7 @@ export default class Layouts extends React.Component {
                   <Breadcrumb.Item>User</Breadcrumb.Item>
                   <Breadcrumb.Item>Bill</Breadcrumb.Item>
                 </Breadcrumb>
-                <div className="site-layout-background" style={{ padding: 24, minHeight: '70vh' }}>
+                <div className="site-layout-background" style={{ padding: 24, minHeight: '70vh'}}>
                 { this.props.children }
                 </div>
               </Content>
