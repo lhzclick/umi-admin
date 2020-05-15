@@ -3,11 +3,13 @@ import styles from './index.less';
 import Siderbar from '../compontents/siderbar/index'
 import Headers from '../compontents/header/index'
 import { Layout, Breadcrumb } from 'antd'
-import {history} from 'umi'
-
+import {history,connect} from 'umi'
+const mapStateToProps = (state: any) => {
+  return state
+}
 const { Header, Content, Footer, Sider } = Layout;
 
-export default class Layouts extends React.Component {
+class Layouts extends React.Component<any> {
     
     state = {
         collapsed: false,
@@ -34,8 +36,12 @@ export default class Layouts extends React.Component {
               </Header>
               <Content style={{ margin: '0 16px' }}>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item>User</Breadcrumb.Item>
-                  <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                  {
+                    this.props.userInfo.breadcrumb.map((item:any,i:any)=>(
+                    <Breadcrumb.Item key={i}>{item}</Breadcrumb.Item>
+                    ))
+                  }
+                  
                 </Breadcrumb>
                 <div className="site-layout-background" style={{ padding: 24, minHeight: '70vh'}}>
                 { this.props.children }
@@ -48,3 +54,4 @@ export default class Layouts extends React.Component {
       }
 
 }
+export default connect(mapStateToProps)(Layouts)

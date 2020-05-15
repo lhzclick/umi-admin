@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { Select, Table, Button } from 'antd';
 import axios from '../../commons/axios'
+import { connect } from 'dva'
 import styles from './index.less'
 const { Option } = Select;
-
+const mapStateToProps = (state: any) => {
+    return state
+}
 
 
 class FilterTable extends Component {
@@ -13,7 +16,7 @@ class FilterTable extends Component {
         dataSource: [],
         pagination: {
             current: 1,
-            pageSize: 10,
+            pageSize: 10
         },
     };
 
@@ -195,17 +198,23 @@ class FilterTable extends Component {
 
 }
 
-export default class index extends Component {
-      state={
-          
-      }
-      componentDidMount() {
-        
+class Index extends Component <any>{
+    state={}
+    componentDidMount() {
+        this.props.dispatch({
+          type: 'userInfo/changeBreadcrumb',
+          payLoad: {
+            breadcrumb: ['菜单1','菜单2']
+          }
+        })
     }
-   
     render() {
         return (
-          <FilterTable ></FilterTable>
+            <div>
+                <FilterTable ></FilterTable>
+            </div>
+          
         );
     }
 }
+export default connect(mapStateToProps)(Index)
