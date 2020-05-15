@@ -11,9 +11,10 @@ class FilterTable extends Component {
         auth_account_status: '',
         account_type: '',
         dataSource: [],
-        current: 1,
-        pageSize: 10,
-        total: 0
+        pagination: {
+            current: 1,
+            pageSize: 10,
+        },
     };
 
     componentDidMount() {
@@ -24,8 +25,10 @@ class FilterTable extends Component {
         let es = e ? e : ''
         this.setState({
             auth_account_status: es,
-            current: 1,
-            pageSize: 10,
+            pagination: {
+                current: 1,
+                pageSize: 10,
+            },
         }, () => {
             this.getData()
         })
@@ -34,8 +37,10 @@ class FilterTable extends Component {
         let es = e ? e : ''
         this.setState({
             account_type: es,
-            current: 1,
-            pageSize: 10,
+            pagination: {
+                current: 1,
+                pageSize: 10,
+            },
         }, () => {
             this.getData()
         })
@@ -46,8 +51,8 @@ class FilterTable extends Component {
             url: "/getCompanyListSystem",
             method: "post",
             data: {
-                pageNo: this.state.current,
-                pageSize: this.state.pageSize,
+                pageNo: this.state.pagination.current,
+                pageSize: this.state.pagination.pageSize,
                 auth_account_status: this.state.auth_account_status,
                 account_type: this.state.account_type,
             }
@@ -55,16 +60,18 @@ class FilterTable extends Component {
             if (res && res.code === 200) {
                 this.setState({
                     dataSource: res.data.list,
-                    total: res.data.total,
+                    pagination: {
+                        ...this.state.pagination,
+                        total: res.data.total
+                      },
                 })
             }
         });
 
     }
-    onShowSizeChange = (current:any, pageSize:any) => {
+    onShowSizeChange = (pagination:any) => {
         this.setState({
-            current: current,
-            pageSize: pageSize
+            pagination
         }, () => {
             this.getData()
         })
@@ -93,52 +100,43 @@ class FilterTable extends Component {
             {
                 title: '公司名称',
                 dataIndex: 'business_name',
-                width: 100,
+                fixed:'left'
             },
             {
                 title: '联系人姓名',
                 dataIndex: 'concat_name',
-                width: 100,
             },
             {
                 title: '联系人电话',
                 dataIndex: 'tel',
-                width: 100,
             },
             {
                 title: '注册时间',
                 dataIndex: 'register_time',
-                width: 100,
             },
             {
                 title: '审核时间',
                 dataIndex: 'verify_time',
-                width: 100,
             },
             {
                 title: '禁用时间',
                 dataIndex: 'disable_time',
-                width: 100,
             },
             {
                 title: '复用时间',
                 dataIndex: 'multiplex_time',
-                width: 100,
             },
             {
                 title: '电子邮箱',
                 dataIndex: 'mail',
-                width: 100,
             },
             {
                 title: '账号类型',
                 dataIndex: 'account_type',
-                width: 100,
             },
             {
                 title: '省市县',
                 dataIndex: 'province_id',
-                width: 100,
                 render: (v:any, item:any, i:any) => (
                     <div>
                         <span>{item.province_id}</span>
@@ -150,20 +148,18 @@ class FilterTable extends Component {
             {
                 title: '详细地址',
                 dataIndex: 'detailed_address',
-                width: 100,
             },
             {
                 title: '信用额度',
                 dataIndex: 'credit_quota',
-                width: 100,
             },
             {
                 title: '操作',
                 dataIndex: 'auth_account_status',
-                width: 100,
+                fixed:'right',
                 render: (v:any, item:any, i:any) => (
                     <div>
-                        <Button onClick={(e) => this.handleStatus(item, e)}>
+                        <Button onClick={(e) => this.handleStatus(item)}>
                             {v === '1' ? '禁用' : '启用'}
                         </Button>
                     </div>
@@ -183,15 +179,15 @@ class FilterTable extends Component {
                     </Select>
                 </div>
                 <div className={styles.table}>
-                    <Table rowKey={record => record.login_id} dataSource={this.state.dataSource} columns={columns} pagination={{
-                        showSizeChanger: true,
-                        current: this.state.current,
-                        pageSize: this.state.pageSize,
-                        total: this.state.total,
-                        onChange: this.onShowSizeChange,
-                        onShowSizeChange: this.onShowSizeChange
-
-                    }} />
+                    <Table 
+                        scroll={{ x: 2000 }}  
+                        rowKey={record => record.login_id}  
+                        dataSource={this.state.dataSource} 
+                        columns={columns} 
+                        loading={false}
+                        onChange={this.onShowSizeChange}
+                        // onShowSizeChange={this.onShowSizeChange}
+                        pagination={this.state.pagination} />
                 </div>
             </div>
         );
