@@ -68,11 +68,11 @@ service.interceptors.response.use(
   },
   (error:any) => {
     //响应错误处理console.log('error')
-    let text =
-      JSON.parse(JSON.stringify(error)).response.status === 404
-        ? "404"
-        : "网络异常，请重试";
-        message.error(text)
+    // let text =
+    //   JSON.parse(JSON.stringify(error)).response.status === 404
+    //     ? "404"
+    //     : "网络异常，请重试";
+    //     message.error(text)
     return Promise.reject(error);
   }
 );

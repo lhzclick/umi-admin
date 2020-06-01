@@ -29,6 +29,7 @@ export default class Siderbar extends React.Component{
         ]
       }
     ],
+    collapsed:'false'
   }
   componentDidMount(){
     
@@ -40,10 +41,9 @@ export default class Siderbar extends React.Component{
     return (
       <div>
         <div className="uLogo">
-          <img className="" src="https://preview.pro.ant.design/static/logo.f0355d39.svg" alt="" />
           <span>Umi Admin</span>
         </div>
-        <Menu theme="dark"  defaultSelectedKeys={['1']} mode="inline">
+        <Menu theme="dark"  defaultSelectedKeys={['1']} mode="inline"  inlineCollapsed={this.state.collapsed}>
         {
           this.state.menuList.map((item1:any)=>(
             // <div>111</div>
